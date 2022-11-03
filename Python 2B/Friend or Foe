@@ -1,0 +1,53 @@
+'''
+https://docs.python.org/3/library/turtle.html
+'''
+
+## MODULES
+from turtle import *
+
+## SETUP
+sc = Screen()
+
+t = Turtle()
+u = Turtle()
+v = Turtle()
+
+turtles = [t, u, v]
+colors = ["blue", "green", "red"]
+starts = [(0,0), (100, -100), (-100, 100)]
+
+for i in range(len(turtles)):
+  turtle = turtles[i]
+  color = colors[i]
+  start = starts[i]
+  
+  turtle.shape("turtle")
+  turtle.fillcolor(color)
+  turtle.up()
+  turtle.goto(start)
+
+## FUNCTIONS
+def left():
+  t.left(30)
+
+def right():
+  t.right(30)
+
+def forward():
+  t.forward(5)
+
+def back():
+  t.backward(5)
+
+## EVENT HANDLERS
+sc.onkey(left, "Left")
+sc.onkey(right, "Right")
+sc.onkey(forward, "Up")
+sc.onkey(back, "Down")
+
+## MAIN
+def main():
+  sc.listen()
+  sc.mainloop()
+
+main()
