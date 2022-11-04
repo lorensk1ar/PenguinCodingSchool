@@ -1,0 +1,27 @@
+class Shape():
+  def __init__(self, sides, length):
+    self.sides = sides
+    self.length = length
+    # self.area = length ** 2
+
+  def __repr__(self):
+    return(str(self.sides) + " sides & perimeter " + str(self.perimeter()))
+
+  def perimeter(self):
+    perimeter = self.sides * self.length
+    return perimeter
+
+  def area(self):
+    area = self.length * self.length
+    return area
+
+square = Shape(4, 100)
+print(square.area())
+
+squares = []
+for length in range(10):
+  squares.append(Shape(4, length))
+
+print(squares)
+
+    
