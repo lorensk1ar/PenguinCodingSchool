@@ -2,10 +2,9 @@ class Shape():
   def __init__(self, sides, length):
     self.sides = sides
     self.length = length
-    # self.area = length ** 2
 
   def __repr__(self):
-    return(str(self.sides) + " sides & perimeter " + str(self.perimeter()))
+    return(str(self.sides) + " sides of length " + str(self.length))
 
   def perimeter(self):
     perimeter = self.sides * self.length
