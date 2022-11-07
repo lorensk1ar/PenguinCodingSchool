@@ -1,0 +1,22 @@
+# Can you get your computer to say hello?
+print("Hello")
+
+# Now add your name
+print("Hello, Loren")
+print("Hello, Elliot")
+print("Hello, Elise")
+
+name = "Loren"
+print("Hello, " + name)
+# What is different about the word name in this example?
+
+# Remember to comment out name assignment above when introducing name = input()
+
+# What if the computer doesn't know your name? Can you get the computer to ask?
+input("What is your name? ")
+print("Hello, " + name)
+# Whoops, the computer did not remember your name.
+
+# How do you get the computer to remember your name?
+name = input("What is your name? ")
+print("Hello, " + name)
