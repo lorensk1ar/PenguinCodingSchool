@@ -1,13 +1,39 @@
-# start without int
-pizzas = int(input("How many pizzas do you have? "))
+# How do I ask a question? For example, how much pizza do I have?
+pizzas = input("How much pizza do you have? ")
+friends = input("How many friends do you have? ")
+
+slices = 8 * pizzas / friends
+
+# Why didn't that work?
+pizzas = int(input("How much pizza do you have? "))
 friends = int(input("How many friends do you have? "))
 
-# start without round
-slices = round(8 * pizzas / friends, 1)
+slices = 8 * pizzas / friends
 
-# start without if and with , rather than str +
+# Now tell me how many slices each person gets
+print(slices)
+
+# Or
 if slices < 1:
   print("That's not enough pizza!")
-else:
-  print ("Each friends gets " + str(slices) + " slices of pizza.")
+else:  
+  print("Each friend gets " + str(slices) + " slices of pizza.")
+  
+'''
+Tell me how print works...
+Tell me how input works...
+
+Recap using the student's version of
+print() say something
+input() ask something
+
+int() thinking of a number
+str() thinking of a word
+
+if / else when we are deciding what to do
+
+NB: It is too soon to explain comments. Write on the whiteboard!
+
+'''
+
   
