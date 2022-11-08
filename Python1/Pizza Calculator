@@ -1,0 +1,13 @@
+# start without int
+pizzas = int(input("How many pizzas do you have? "))
+friends = int(input("How many friends do you have? "))
+
+# start without round
+slices = round(8 * pizzas / friends, 1)
+
+# start without if and with , rather than str +
+if slices < 1:
+  print("That's not enough pizza!")
+else:
+  print ("Each friends gets " + str(slices) + " slices of pizza.")
+  
