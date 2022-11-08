@@ -1,0 +1,15 @@
+# Today we're going to play Madlibs!
+
+noun = input("Pick a noun: ")
+
+verb = input("Pick a verb: ")
+
+adj = input("Pick an adjective: ")
+
+print("The " + adj + " clown " + verb + " my " + noun)
+
+
+
+# Extend by adding more sentences
+
+# Show that each noun, verb, adj needs a unique name so noun1, noun2, etc
