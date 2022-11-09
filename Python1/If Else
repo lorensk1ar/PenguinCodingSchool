@@ -1,10 +1,37 @@
-num = int(input("Pick a number: "))
+# How do we get the computer to ask a question?
+num = input("Pick a number: ")
 
+# Try it. Did it work?
+print(num > 100)
+
+# Why didn't that work?
+num = input("Pick a number: ")
+num = int(num)
+
+# or num = int(input("Pick a number: "))
+
+# Now let's practice using if and else
 if num > 100: 
   print("Greater than 100")
 elif num < 100:
-  print(num, "is less than 100")
+  print(Less than 100")
 elif num == 100:
-  print(num, "is equal to 100")
+  print("Equal to 100")
 else: 
   print("I'm confused")
+
+# Or better
+if num > 100: 
+  print(str(num) + " is greater than 100")
+elif num < 100:
+  print(str(num) + " is less than 100")
+elif num == 100:
+  print(str(num) + " is equal to 100")
+else: 
+  print("I'm confused")
+  
+# Next up? Guess a number!
+  
+
+  
+ 
