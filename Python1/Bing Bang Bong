@@ -1,0 +1,10 @@
+for i in range(3):
+    print('bing')
+    print('bang')
+    print('bong')
+    
+print("Done!)
+
+# How many times does the computer print bing? bang? bong?
+# Remove tabs one at a time
+# Repeat question
