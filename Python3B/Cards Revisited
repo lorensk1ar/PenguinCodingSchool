@@ -1,12 +1,13 @@
 ## MODULES
 # Is it possible to generate a random number in python using only built in functions?
+
 from random import randrange
 
 
 ## VARIABLES
 RANKS = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K"]
 
-SUITS = ["S", "H", "D", "C"]
+SUITS = ["♠", "♡", "♢", "♣"]
 
 
 ## CLASSES
