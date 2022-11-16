@@ -1,0 +1,75 @@
+## MODULES
+# Is it possible to generate a random number in python using only built in functions?
+from random import randrange
+
+
+## VARIABLES
+RANKS = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K"]
+
+SUITS = ["S", "H", "D", "C"]
+
+
+## CLASSES
+class Card:
+    def __init__(self, number):
+        # rank expressed as a number 0 to 12
+        self.rank = number % 13
+        
+        # suit expressed as a number 0 to 3
+        self.suit = (number // 13) % 4
+
+        # value expressed as a number 2 to 14
+        v = self.rank + 1
+        if v == 1:
+            v = 14
+
+        self.value = v
+
+        # rank and suit expressed as a string
+        self.str = RANKS[self.rank] + SUITS[self.suit]
+
+    def __repr__(self):
+        return self.str
+
+    def __str__(self):
+        return self.str
+
+class Deck:
+    def __init__(self, decks = 1):
+        self.cards = []
+
+        for i in range(decks * 52):
+            self.cards.append(Card(i))
+
+    def __repr__(self):
+        tmp = "["
+        for card in self.cards:
+            tmp += str(card) + ", "
+        result = tmp[:-2] + "]"
+        return result
+
+    def __str__(self):
+        tmp = "["
+        for card in self.cards:
+            tmp += str(card) + ", "
+        result = tmp[:-2] + "]"
+        return result
+
+    def shuffle(self):
+        last = len(self.cards)
+        for i in range(last):
+            j = randrange(i, last)
+            self.cards[i], self.cards[j] = self.cards[j], self.cards[i]
+        return self.cards
+
+    def deal(self, count = 1):
+        result = []
+        for i in range(count):
+            tmp = self.cards.pop()
+            result.append(tmp)
+        return result
+
+        
+shoe = Deck()
+shoe.shuffle()
+print(shoe)
