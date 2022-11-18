@@ -1,0 +1,31 @@
+'''
+.append()
+.pop()
+.index()
+
+'''
+
+shop = []
+
+def buy(shop):
+  while True:
+    item = input("What would you like to add to the list? ")
+
+    if item == "":
+      break
+      
+    else:
+      shop.append(item)
+
+def sell(shop):
+  item = input("What would you like to remove? ")
+  index = shop.index(item)
+  shop.pop(index)
+  
+buy(shop)
+print(shop)
+sell(shop)
+print(shop)
+
+for item in shop:
+  print(item)
