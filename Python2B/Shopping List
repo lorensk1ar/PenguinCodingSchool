@@ -19,8 +19,9 @@ def buy(shop):
 
 def sell(shop):
   item = input("What would you like to remove? ")
-  index = shop.index(item)
-  shop.pop(index)
+  # index = shop.index(item)
+  # shop.pop(index)
+  shop.remove(item)
   
 buy(shop)
 print(shop)
