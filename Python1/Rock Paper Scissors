@@ -1,0 +1,61 @@
+'''
+TO DO
+error handling?
+score?
+
+'''
+
+import random
+
+again = input("Play game [y/n]? ")
+
+while again == "y":
+  p = input("Pick r, p, or s? ")
+  c = random.choice(["r", "p", "s"])
+
+  if c == "r":
+    print("Computer picks rock.")
+    if p == "r":
+      result = "tie"
+    elif p == "p":
+      result = "win"
+    elif p == "s":
+      result = "lose"
+    else:
+      result = "?"
+
+  elif c == "p":
+    print("Computer picks paper.")
+    if p == "r":
+      result = "lose"
+    elif p == "p":
+      result = "tie"
+    elif p == "s":
+      result = "win"
+    else:
+      result = "?"    
+
+  elif c == "s":
+    print("Computer picks scissors.")
+    if p == "r":
+      result = "win"
+    elif p == "p":
+      result = "lose"
+    elif p == "s":
+      result = "tie"
+    else:
+      result = "?"
+      
+  else:
+    pass
+
+  if result == "win":
+    print("You win! :-)")
+  elif result == "tie":
+    print("You tie!")
+  elif result == "lose":
+    print("You lose! :-(")
+  else:
+    print("I'm confused.")
+
+  again = input("Play again [y/n]? ")
