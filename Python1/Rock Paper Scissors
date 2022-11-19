@@ -1,20 +1,26 @@
-'''
-TO DO
-error handling?
-score?
-
-'''
-
+## MODULES
 import random
 
-again = input("Play game [y/n]? ")
+## MAIN
+win = 0
+tie = 0
+lose = 0
 
-while again == "y":
-  p = input("Pick r, p, or s? ")
+while True:
+  print()
+  p = input("Rock, paper, or scissors [r/p/s]? ")
+  print()
+  
+  if p == "":
+    break
+  else:
+    p = p[:1]
+    p = p.lower()
+
   c = random.choice(["r", "p", "s"])
 
   if c == "r":
-    print("Computer picks rock.")
+    print("Computer picks rock")
     if p == "r":
       result = "tie"
     elif p == "p":
@@ -25,7 +31,7 @@ while again == "y":
       result = "?"
 
   elif c == "p":
-    print("Computer picks paper.")
+    print("Computer picks paper")
     if p == "r":
       result = "lose"
     elif p == "p":
@@ -36,7 +42,7 @@ while again == "y":
       result = "?"    
 
   elif c == "s":
-    print("Computer picks scissors.")
+    print("Computer picks scissors")
     if p == "r":
       result = "win"
     elif p == "p":
@@ -51,11 +57,18 @@ while again == "y":
 
   if result == "win":
     print("You win! :-)")
+    win += 1
   elif result == "tie":
     print("You tie!")
+    tie += 1
   elif result == "lose":
     print("You lose! :-(")
+    lose += 1
   else:
-    print("I'm confused.")
+    print("Huh?")
 
-  again = input("Play again [y/n]? ")
+  pct = win / (win + tie + lose) * 100
+  pct = round(pct, 1)
+  print(f"{pct}% \n")
+
+print("Goodbye!")
