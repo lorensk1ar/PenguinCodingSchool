@@ -3,8 +3,13 @@ import random
 
 ## MAIN
 win = 0
-tie = 0
-lose = 0
+count = 0
+
+matrix = {
+  "r": {"r": 0.5, "p": 0, "s": 1}, \
+  "p": {"r": 1, "p": 0.5, "s": 0}, \
+  "s": {"r": 0, "p": 1, "s": 0.5} \
+}
 
 while True:
   print()
@@ -13,61 +18,36 @@ while True:
   
   if p == "":
     break
-  else:
-    p = p[:1]
-    p = p.lower()
+    
+  p = p[:1]
+  p = p.lower()
 
   c = random.choice(["r", "p", "s"])
 
   if c == "r":
     print("Computer picks rock")
-    if p == "r":
-      result = "tie"
-    elif p == "p":
-      result = "win"
-    elif p == "s":
-      result = "lose"
-    else:
-      result = "?"
-
   elif c == "p":
     print("Computer picks paper")
-    if p == "r":
-      result = "lose"
-    elif p == "p":
-      result = "tie"
-    elif p == "s":
-      result = "win"
-    else:
-      result = "?"    
-
   elif c == "s":
-    print("Computer picks scissors")
-    if p == "r":
-      result = "win"
-    elif p == "p":
-      result = "lose"
-    elif p == "s":
-      result = "tie"
-    else:
-      result = "?"
-      
+    print("Computer picks scissors")  
   else:
     pass
 
-  if result == "win":
+  result = matrix[p][c]
+
+  win += result
+  count += 1
+  
+  if result == 1:
     print("You win! :-)")
-    win += 1
-  elif result == "tie":
+  elif result == 0.5:
     print("You tie!")
-    tie += 1
-  elif result == "lose":
+  elif result == 0:
     print("You lose! :-(")
-    lose += 1
   else:
     print("Huh?")
 
-  pct = win / (win + tie + lose) * 100
+  pct = win / count * 100
   pct = round(pct, 1)
   print(f"{pct}% \n")
 
