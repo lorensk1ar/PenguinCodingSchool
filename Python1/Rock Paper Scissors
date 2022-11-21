@@ -1,54 +1,81 @@
 ## MODULES
 import random
 
-## MAIN
-win = 0
-count = 0
+## VARIABLES
+computer = "lizard"
+player = "spock"
 
-matrix = {
+choices = ["rock", "paper", "scissors"]
+
+valid = []
+for choice in choices:
+  valid.append(choice[:1])
+
+results = {
   "r": {"r": 0.5, "p": 0, "s": 1}, \
   "p": {"r": 1, "p": 0.5, "s": 0}, \
   "s": {"r": 0, "p": 1, "s": 0.5} \
 }
 
-while True:
-  print()
-  p = input("Rock, paper, or scissors [r/p/s]? ")
-  print()
-  
-  if p == "":
-    break
-    
-  p = p[:1]
-  p = p.lower()
+wins = 0
+rounds = 0
 
-  c = random.choice(["r", "p", "s"])
 
-  if c == "r":
-    print("Computer picks rock")
-  elif c == "p":
-    print("Computer picks paper")
-  elif c == "s":
-    print("Computer picks scissors")  
+## FUNCTIONS
+def player_picks(p):
+  while p not in valid:
+    p = input("Rock, paper, scissors? ")
+    if p == "":
+      break
+    p = p[:1]
+    p = p.lower()
+  return p
+
+def computer_picks(c):
+  c = random.choice(choices)
+  return c
+
+def get_result(p, c):
+  return results[p][c]
+
+def get_message(r):
+  if r == 1:
+    msg = "You win! :-)"
+  elif r == 0.5:
+    msg = "You tie!"
+  elif r == 0:
+    msg = "You lose! :-("
   else:
-    pass
+    msg = "Huh?"
+  return msg
 
-  result = matrix[p][c]
-
-  win += result
-  count += 1
-  
-  if result == 1:
-    print("You win! :-)")
-  elif result == 0.5:
-    print("You tie!")
-  elif result == 0:
-    print("You lose! :-(")
-  else:
-    print("Huh?")
-
-  pct = win / count * 100
+def get_score(wins, rounds, result):
+  wins += result
+  rounds += 1
+  pct = wins / rounds * 100
   pct = round(pct, 1)
+  return wins, rounds, pct
+  
+
+## MAIN
+while True:
+  player = player_picks(player)
+    
+  if player == "":
+    break
+
+  computer = computer_picks(computer)
+  print(f"Computer picks {computer}")
+  computer = computer[:1]
+
+  result = get_result(player, computer)
+
+  msg = get_message(result)
+  print(msg)
+  
+  wins, rounds, pct = get_score(wins, rounds, result)
   print(f"{pct}% \n")
+
+  player = "again"
 
 print("Goodbye!")
