@@ -2,19 +2,18 @@
 import random
 
 ## VARIABLES
-computer = "lizard"
-player = "spock"
+valid = ["r", "p", "s"]
 
-choices = ["rock", "paper", "scissors"]
-
-valid = []
-for choice in choices:
-  valid.append(choice[:1])
+display = {
+  "r" : "rock",
+  "p" : "paper",
+  "s" : "scissors"  
+}
 
 results = {
-  "r": {"r": 0.5, "p": 0, "s": 1}, \
-  "p": {"r": 1, "p": 0.5, "s": 0}, \
-  "s": {"r": 0, "p": 1, "s": 0.5} \
+  "r": {"r": 0.5, "p": 0, "s": 1}, 
+  "p": {"r": 1, "p": 0.5, "s": 0}, 
+  "s": {"r": 0, "p": 1, "s": 0.5} 
 }
 
 wins = 0
@@ -22,60 +21,82 @@ rounds = 0
 
 
 ## FUNCTIONS
-def player_picks(p):
-  while p not in valid:
-    p = input("Rock, paper, scissors? ")
-    if p == "":
+def display_move(text, hand):
+  if hand:
+    message = f"{text} {display[hand]}"
+    print(message)
+    
+def player_moves():
+  hand = None
+  while hand not in valid:
+    hand = input("Rock, paper, scissors? ")
+    
+    if hand == "":
+      hand = None
       break
-    p = p[:1]
-    p = p.lower()
-  return p
 
-def computer_picks(c):
-  c = random.choice(choices)
-  return c
+    hand = hand[:1]
+    hand = hand.lower()
+
+  text = "You pick"
+  display_move(text, hand)
+    
+  return hand
+
+def computer_moves():
+  hand = random.choice(valid)
+
+  text = "Computer picks"
+  display_move(text, hand)
+
+  return hand
 
 def get_result(p, c):
   return results[p][c]
 
-def get_message(r):
-  if r == 1:
+def display_result(result):
+  # select message based on result
+  if result == 1:
     msg = "You win! :-)"
-  elif r == 0.5:
+  elif result == 0.5:
     msg = "You tie!"
-  elif r == 0:
+  elif result == 0:
     msg = "You lose! :-("
   else:
     msg = "Huh?"
-  return msg
 
-def get_score(wins, rounds, result):
+  # display result
+  print(msg)
+
+def display_score(result):
+  # access global variables for wins & rounds
+  global wins, rounds
+  
+  # update wins, & rounds
   wins += result
   rounds += 1
+
+  # calculate win percentage
   pct = wins / rounds * 100
   pct = round(pct, 1)
-  return wins, rounds, pct
+  
+  # display win percentage
+  print(f"{pct}% \n")
   
 
 ## MAIN
 while True:
-  player = player_picks(player)
+  player = player_moves()
     
-  if player == "":
+  if not player:
     break
 
-  computer = computer_picks(computer)
-  print(f"Computer picks {computer}")
-  computer = computer[:1]
+  computer = computer_moves()
 
   result = get_result(player, computer)
 
-  msg = get_message(result)
-  print(msg)
+  display_result(result)
   
-  wins, rounds, pct = get_score(wins, rounds, result)
-  print(f"{pct}% \n")
-
-  player = "again"
+  display_score(result)
 
 print("Goodbye!")
