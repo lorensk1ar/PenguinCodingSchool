@@ -7,7 +7,7 @@ from random import randrange
 ## VARIABLES
 RANKS = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K"]
 
-SUITS = ["♠", "♡", "♢", "♣"]
+SUITS = ["S", "H", "D", "C"]
 
 
 ## CLASSES
@@ -42,6 +42,8 @@ class Deck:
         for i in range(decks * 52):
             self.cards.append(Card(i))
 
+        self.size = len(self.cards)
+
     def __repr__(self):
         tmp = "["
         for card in self.cards:
@@ -63,14 +65,15 @@ class Deck:
             self.cards[i], self.cards[j] = self.cards[j], self.cards[i]
         return self.cards
 
-    def deal(self, count = 1):
-        result = []
+    def pull(self, count = 1):
+        hand = []
         for i in range(count):
             tmp = self.cards.pop()
-            result.append(tmp)
-        return result
+            hand.append(tmp)
+            self.size -= 1
+        return hand
 
-        
-shoe = Deck()
-shoe.shuffle()
-print(shoe)
+    def pick(self, cards):
+        tmp = list(cards)
+        self.cards = tmp + self.cards
+        self.size += len(tmp)
