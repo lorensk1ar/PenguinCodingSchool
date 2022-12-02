@@ -32,14 +32,3 @@ for item in shop:
   print(item)
  
 
-'''
-.reverse()
-.sort()
-
-'''
-
-alphabet = ['a', 'b', 'c', 'd', 'e', 'f']
-alphabet.reverse()
-print(alphabet)
-alphabet.sort()
-print(alphabet)
