@@ -1,0 +1,37 @@
+## MORE LIST METHODS
+'''
+.reverse()
+.sort()
+
+'''
+
+alphabet = ['a', 'b', 'c', 'd', 'e', 'f']
+alphabet.reverse()
+print(alphabet)
+alphabet.sort()
+print(alphabet)
+
+
+
+## LIST COMPREHENSION
+# create a list of integers up to 100
+numbers = []
+for i in range(100):
+  numbers.append(i)
+  
+# or
+numbers = [i for i in range(100)]
+
+# for each item in the list
+for number in numbers:
+  print(number) 
+  
+# create a list of even integers up to 100
+numbers = []
+for i in range(100):
+  if i % 2 == 0:
+    numbers.append(i)
+
+# or
+numbers = [i for i in range(100) if i % 2 == 0]
+
