@@ -65,4 +65,24 @@ print()
 print(titanic_df['survived'].corr(titanic_df['pclass']))
 print()
 
+# https://matplotlib.org/stable/api/pyplot_summary.html
+# is matplotlib installed?
+import matplotlib.pyplot as pyp
+
+# what percentage of male passengers survived? female passengers?
+# first class passengers? second class passangers?
+group = titanic_df.groupby(['pclass','sex']).mean(numeric_only = True)
+print(grouping)
+
+# can you show that information in a bar chart?
+group['survived'].plot.bar()
+
+pyp.title("Who Survived?")
+pyp.ylabel("Percent")
+pyp.xlabel("Class and Sex")
+pyp.show()
+
+# next up?
+# find a dataset you would like to explore from https://www.kaggle.com/datasets
+# for example https://www.kaggle.com/datasets/grouplens/movielens-20m-dataset
 
