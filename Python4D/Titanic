@@ -1,0 +1,68 @@
+## DATA
+# https://www.kaggle.com/datasets/vinicius150987/titanic3
+# is the titanic data installed on your computer?
+# is it in the same folder as your python script?
+
+
+## MODULES
+import pandas as pd
+import openpyxl
+
+titanic_df = pd.read_excel(
+    'titanic3.xlsx',
+    'titanic3',
+    index_col=None,
+    na_values=['NA']
+)
+
+'''
+.columns
+.dtypes
+.count()
+.describe() ? (include='all')
+.info()
+.head(rows)
+.tail(rows)
+'''
+
+# did info load properly?
+print(titanic_df.head(10))
+print("\n")
+
+ 
+'''
+# basic statistics methods
+.count()
+also, df['column'].value_counts()
+.max()
+.min()
+.median()
+.std()
+.corr()
+
+'''
+print(titanic_df['survived'].value_counts())
+print()
+
+print(titanic_df['pclass'].value_counts())
+print()
+
+# what percentage of passengers survived?
+print(titanic_df['survived'].mean() * 100, "%")
+print()
+
+# what percentage of first class passengers survived?
+rich = titanic_df[titanic_df.pclass == 1]
+print(rich['survived'].mean() * 100, "%")
+print()
+
+# what percentage of third class passengers survived?
+poor = titanic_df[titanic_df.pclass == 3]
+print(poor['survived'].mean() * 100, "%")
+print()
+
+# are class and survival rate correlated?
+print(titanic_df['survived'].corr(titanic_df['pclass']))
+print()
+
+
