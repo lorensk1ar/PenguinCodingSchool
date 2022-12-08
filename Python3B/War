@@ -1,47 +1,61 @@
-'''
-## TO DO
-Better reporting for cards lost in war
-.pull() returns list or card?
-
-'''
-
-## MODULES
 import cards
 
-## DEAL
-player = Deck(0)
-computer = Deck(0)
-shoe = Deck()
-shoe.shuffle()
-while shoe.size > 0:
-    player.pick(shoe.pull())
-    computer.pick(shoe.pull())
+player = Deck()
+player.empty()
 
-## PLAY
-while player.size > 0 and computer.size > 0:
-    p = player.pull(1)[0]
-    c = computer.pull(1)[0]
-    print("Player's card:", p)
-    print("Computer's card:", c)
-    pile = [p, c]
+computer = Deck()
+computer.empty()
 
-    while p.rank == c.rank:
-        print("War!")
-        pile += player.pull(3)
-        pile += computer.pull(3)
-        p = player.pull()[0]
-        c = computer.pull()[0]
+dealer = Deck()
+dealer.shuffle()
+while dealer.size() > 0:
+  player.cards.append(dealer.deal())
+  computer.cards.append(dealer.deal())
 
-    if p.value > c.value:
-        print("Player wins!")
-        player.pick(pile)
+while player.size() > 0 and computer.size() > 0:
+  p = player.deal()
+  c = computer.deal()
 
-    elif p.value < c.value:
-        print("Computer wins!")
-        computer.pick(pile)
+  print("Player's card:", p)
+  print("Computer's card:", c)
+  input()
 
-    else:
-        pass
+  # put the cards in the middle
+  middle = [p, c]
+  
+  # else War!
+  while p.value() == c.value():
+    print("War!")
+    plist = []
+    clist = []
+    for i in range(3):
+      plist.append(player.deal())
+      clist.append(computer.deal())
+    p = player.deal()
+    c = computer.deal()
 
-    print("Player holds", player.size, "cards \n")
-    input()
+    pstr = ""
+    for card in plist:
+      pstr += str(card) + ", "
+    pstr += str(p)
+    print("Player deals", pstr)
+    
+    cstr = ""
+    for card in clist:
+      cstr += str(card) + ", "
+    cstr += str(c)
+    print("Computer deals", cstr)
+    
+    middle = middle + plist + clist + [p, c]
+    
+  # if p > c player wins
+  if p.value() > c.value():
+    player.cards = middle + player.cards
+    print("Player wins!")
+    print("Player's deck:", player.size(), "\n")
+  
+  # if c > p computer wins
+  if c.value() > p.value():
+    computer.cards= middle + computer.cards
+    print("Computer wins!")
+    print("Computer's deck:", computer.size(),"\n")
