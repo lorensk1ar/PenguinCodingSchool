@@ -14,6 +14,13 @@ class Card:
   def __repr__(self):
     return self.rank + self.suit
 
+  def value(self):
+    try:
+      return RANKS.index(self.rank)
+    except:
+      return "0"
+    
+
 class Deck:
   def __init__(self):
     self.cards = []
@@ -26,9 +33,18 @@ class Deck:
     random.shuffle(self.cards)
 
   def deal(self):
-    return self.cards.pop()
-        
-deck = Deck()
-deck.shuffle()
-card = deck.deal()
-print(card)
+    if self.size() > 0:
+      return self.cards.pop()
+    else:
+       return Card("0", "0")
+
+  def empty(self):
+    self.cards = []
+
+  def size(self):
+    return len(self.cards)
+
+
+
+
+  
