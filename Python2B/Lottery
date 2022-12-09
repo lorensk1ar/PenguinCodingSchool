@@ -1,18 +1,18 @@
 '''
 TO DO:
-Only valid numbers in ticket
-No duplicates in ticket
-No duplicates in winner
+y Only valid numbers in ticket
+y No duplicates in ticket
+y No duplicates in winner
 
 '''
 
 '''
 RULES:
-1 match = $100
-2 match = $1000
-3 match = $10000
-4 match = $100000
-5 match = $1000000
+1 match = $10
+2 match = $100
+3 match = $1000
+4 match = $10000
+5 match = $100000
 '''
 
 ## PACKAGES
@@ -21,16 +21,49 @@ from random import *
 ## FUNCTIONS
 def pick_winner(limit = 100):
   win = []
-  for i in range(5):
-    win.append(randint(1, limit))
+  while len(win) < 5:
+    number = (randint(1, limit))
+    if number not in win:
+      win.append(number)
   win.sort()
   return win
 
+def is_valid(number, limit):
+  result = False
+  
+  try:
+    number = int(number)
+
+    if number <= 0:
+      print("Greater or equal to 1, please!")
+    elif number > limit:
+      print(f"Less than or equal to {limit}, please!")
+    else:
+      result = True
+      
+  except:
+    print("Numbers only, please!")
+    
+  return result
+
+def is_unique(number, numbers):
+  if number in numbers:
+    print(f"You already picked {number}")
+    return False
+    
+  return True
+
 def pick_ticket(limit = 100):
   ticket = []
-  for i in range(5):
-    number = int(input("Pick a number from 1 to " + str(limit) + ": "))
-    ticket.append(number)
+  while len(ticket) < 5:
+    number = input(f"Pick a number from 1 to {limit}: ")
+      
+    if is_valid(number, limit):
+      number = int(number)
+
+      if is_unique(number, ticket):
+        ticket.append(number)
+    
   ticket.sort()
   return ticket
 
@@ -51,16 +84,24 @@ def print_ticket(message, ticket):
 def print_cash(count):
   print("You picked", count, "matching numbers.")
 
-  jackpot = 10 ** (count + 1)
+  jackpot = 10**count if count > 0 else 0
   print(f"You win ${jackpot}!")
 
 ## MAIN
-ticket = pick_ticket(10)
-print_ticket("You picked", ticket)
+again = True
+while again:
+  ticket = pick_ticket()
+  print_ticket("You picked", ticket)
+  
+  winner = pick_winner()
+  print_ticket("The winning numbers are", winner)
+  
+  count = count_matches(ticket, winner)
+  print_cash(count)
 
-winner = pick_winner(10)
-print_ticket("The winning numbers were", winner)
-
-count = count_matches(ticket, winner)
-print_cash(count)
-
+  answer = input("Would you like to play again? [y/n] ")
+  answer = answer[0:1]
+  answer = answer.lower()
+  if answer != "y":
+    again = False
+ 
