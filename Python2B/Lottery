@@ -86,6 +86,12 @@ def print_cash(count):
 
   jackpot = 10**count if count > 0 else 0
   print(f"You win ${jackpot}!")
+  
+def play_again():
+  answer = input("Would you like to play again? [y/n] ")
+  answer = answer[0:1]
+  answer = answer.lower()
+  return answer == "y"
 
 ## MAIN
 again = True
@@ -99,9 +105,5 @@ while again:
   count = count_matches(ticket, winner)
   print_cash(count)
 
-  answer = input("Would you like to play again? [y/n] ")
-  answer = answer[0:1]
-  answer = answer.lower()
-  if answer != "y":
-    again = False
+  again = play_again()
  
