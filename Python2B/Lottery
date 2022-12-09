@@ -1,0 +1,66 @@
+'''
+TO DO:
+Only valid numbers in ticket
+No duplicates in ticket
+No duplicates in winner
+
+'''
+
+'''
+RULES:
+1 match = $100
+2 match = $1000
+3 match = $10000
+4 match = $100000
+5 match = $1000000
+'''
+
+## PACKAGES
+from random import *
+
+## FUNCTIONS
+def pick_winner(limit = 100):
+  win = []
+  for i in range(5):
+    win.append(randint(1, limit))
+  win.sort()
+  return win
+
+def pick_ticket(limit = 100):
+  ticket = []
+  for i in range(5):
+    number = int(input("Pick a number from 1 to " + str(limit) + ": "))
+    ticket.append(number)
+  ticket.sort()
+  return ticket
+
+def count_matches(ticket, winner):
+  count = 0
+  for number in ticket:
+    if number in winner:
+      count += 1
+  return count
+
+def print_ticket(message, ticket):
+  result = message
+  for number in ticket:
+    result += f" {number},"
+  result = result[:-1]
+  print(result)
+
+def print_cash(count):
+  print("You picked", count, "matching numbers.")
+
+  jackpot = 10 ** (count + 1)
+  print(f"You win ${jackpot}!")
+
+## MAIN
+ticket = pick_ticket(10)
+print_ticket("You picked", ticket)
+
+winner = pick_winner(10)
+print_ticket("The winning numbers were", winner)
+
+count = count_matches(ticket, winner)
+print_cash(count)
+
