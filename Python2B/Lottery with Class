@@ -1,0 +1,71 @@
+'''
+TO DO:
+__repr__ & __str__
+pick winning numbers?
+compare ticket to winning numbers
+cash out
+bankroll?
+EV?
+'''
+
+'''
+RULES:
+1 match = $10
+2 match = $100
+3 match = $1000
+4 match = $10000
+5 match = $100000
+'''
+
+## PACKAGES
+from random import *
+
+class Ticket:
+  def __init__ (self, size, limit = 100):
+    self.numbers = []
+    self.size = size
+    self.limit = limit
+
+  def select(self):
+    while len(self.numbers) < self.size:
+      number = input(f"Pick a number from 1 to {self.limit}: ")
+
+      valid = True
+      
+      try:
+        number = int(number)
+
+        if number <= 0:
+          print("Greater or equal to 1, please!")
+          valid = False
+          
+        elif number > self.limit:
+          print(f"Less than or equal to {self.limit}, please!")
+          valid = False
+  
+        elif number in self.numbers:
+          print(f"You already picked {number}. Pick again.")
+          valid = False
+        
+      except:
+        print("Numbers only, please")
+        valid = False
+    
+      if valid:
+        self.numbers.append(number)
+
+    self.numbers.sort()
+
+
+my_ticket = Ticket(5)
+my_ticket.select()
+print(my_ticket.numbers)
+        
+      
+
+    
+
+  
+
+
+
