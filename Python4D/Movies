@@ -1,0 +1,72 @@
+import pandas as pd
+import openpyxl
+
+'''
+https://www.kaggle.com/datasets/grouplens/movielens-20m-dataset
+
+files = ['genome_scores',
+         'genome_tags',
+         'link',
+         'movie',
+         'rating',
+         'tag']
+
+for file in files:
+    df = pd.read_csv(file + '.csv')
+    print(file)
+    df.info()
+    print(df.head(10))
+    print()
+'''
+
+
+'''
+user
+user ratings by category
+movies by category
+top ten movies in the user's favorite category
+
+not already rated by user?
+
+'''
+
+
+movies = pd.read_csv('movie.csv')
+# movies.info()
+# print()
+ratings = pd.read_csv('rating.csv')
+# ratings.info()
+# print()
+data = pd.merge(movies, ratings)
+# data.info()
+# print()
+
+'''
+# print specific rows
+for i in range(0, 100 + 1):
+    print(movies.iloc[[i]])
+    print(test['rating'].mean())
+
+'''
+
+target = movies[movies.title == "Die Hard (1988)"]
+tmp = movies[movies.title >= "Die Hard"] 
+test = tmp[tmp.title <= "Die Hare"] 
+print(target.head())
+print()
+print(test.head())
+print()
+
+'''
+# Find best rated film in franchise?
+
+'''
+
+dh = data[data.movieId == 1036]
+print('max', dh['rating'].max())
+print('mid', dh['rating'].median())
+print('min', dh['rating'].min())
+print('std', dh['rating'].std())
+
+
+
