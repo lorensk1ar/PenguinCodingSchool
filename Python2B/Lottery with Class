@@ -19,23 +19,6 @@ RULES:
 
 ## PACKAGES
 from random import randint
-
-def is_number(number):
-  try:
-    number = int(number)
-    return True
-
-  except:
-    return False
-  
-def is_positive(number):
-  return number >= 1
-
-def is_less_than_or_equal_to_limit(number, limit):
-  return number <= limit
-  
-def is_unique(number, numbers):
-  return number not in self.numbers
     
 class Ticket:
   def __init__ (self, size, limit = 100):
@@ -99,7 +82,7 @@ class Ticket:
 
 
 size = 5
-limit = 10
+limit = 100
 
 my_ticket = Ticket(size, limit)
 my_ticket.select()
