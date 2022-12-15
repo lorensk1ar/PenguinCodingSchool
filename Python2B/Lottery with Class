@@ -1,8 +1,8 @@
 '''
 TO DO:
-__repr__ & __str__
-pick winning numbers?
+y pick winning numbers?
 compare ticket to winning numbers
+what if different size?
 cash out
 bankroll?
 EV?
@@ -18,54 +18,94 @@ RULES:
 '''
 
 ## PACKAGES
-from random import *
+from random import randint
 
+def is_number(number):
+  try:
+    number = int(number)
+    return True
+
+  except:
+    return False
+  
+def is_positive(number):
+  return number >= 1
+
+def is_less_than_or_equal_to_limit(number, limit):
+  return number <= limit
+  
+def is_unique(number, numbers):
+  return number not in self.numbers
+    
 class Ticket:
   def __init__ (self, size, limit = 100):
     self.numbers = []
     self.size = size
     self.limit = limit
 
+  def __repr__(self):
+    result = ""
+    for number in self.numbers:
+      result += str(number) + ", "
+    result = result[:-2]
+    return result
+
+  def __str__(self):
+    result = ""
+    for number in self.numbers:
+      result += str(number) + ", "
+    result = result[:-2]
+    return result
+    
   def select(self):
     while len(self.numbers) < self.size:
       number = input(f"Pick a number from 1 to {self.limit}: ")
 
-      valid = True
-      
+      # number?
       try:
         number = int(number)
-
-        if number <= 0:
-          print("Greater or equal to 1, please!")
-          valid = False
-          
-        elif number > self.limit:
-          print(f"Less than or equal to {self.limit}, please!")
-          valid = False
-  
-        elif number in self.numbers:
-          print(f"You already picked {number}. Pick again.")
-          valid = False
         
       except:
-        print("Numbers only, please")
-        valid = False
-    
-      if valid:
+        print("Numbers only, please!")
+        continue        
+          
+      # greater than or equal to 1?
+      if number <= 0:
+        print("Greater than or equal to 1, please!")
+        continue
+        
+      # less than or equal to limit?
+      elif number > self.limit:
+        print(f"Less than or equal to {self.limit}, please!")
+        continue
+
+      # unique?
+      elif number in self.numbers:
+        print(f"You already picked {number}. Pick again.")
+        continue
+
+      else:
         self.numbers.append(number)
 
     self.numbers.sort()
 
+  def pick(self):
+    while len(self.numbers) < self.size:
+      number = randint(1, self.limit)
 
-my_ticket = Ticket(5)
+      if number not in self.numbers:
+
+    self.numbers.sort()
+
+
+size = 5
+limit = 10
+
+my_ticket = Ticket(size, limit)
 my_ticket.select()
-print(my_ticket.numbers)
+print(my_ticket)
+
+winning_ticket = Ticket(size, limit)
+winning_ticket.pick()
+print(winning_ticket)
         
-      
-
-    
-
-  
-
-
-
