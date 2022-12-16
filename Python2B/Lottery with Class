@@ -1,9 +1,9 @@
 '''
 TO DO:
 y pick winning numbers?
-compare ticket to winning numbers
+y compare ticket to winning numbers
 what if different size?
-cash out
+
 bankroll?
 EV?
 '''
@@ -46,14 +46,19 @@ class Ticket:
 
       # number?
       try:
-        number = int(number)
+        decimal = float(number)
+        number = int(decimal)
         
       except:
         print("Numbers only, please!")
-        continue        
+        continue 
+
+      # integer?
+      if decimal != number:
+        print("No decimals or fractions, please!")
           
       # greater than or equal to 1?
-      if number <= 0:
+      elif number <= 0:
         print("Greater than or equal to 1, please!")
         continue
         
@@ -77,9 +82,28 @@ class Ticket:
       number = randint(1, self.limit)
 
       if number not in self.numbers:
+        self.numbers.append(number)
 
     self.numbers.sort()
 
+  def match(self, winners):
+    count = 0
+    for number in self.numbers:
+      if number in winners.numbers:
+        count += 1
+    return count
+
+  def value(self, winners):
+    count = 0
+    for number in self.numbers:
+      if number in winners.numbers:
+        count += 1
+    
+    if count == 0:
+      money = 0
+    else:
+      money = 10 ** count
+    return money
 
 size = 5
 limit = 100
@@ -91,4 +115,19 @@ print(my_ticket)
 winning_ticket = Ticket(size, limit)
 winning_ticket.pick()
 print(winning_ticket)
+
+count = my_ticket.match(winning_ticket)
+plural = "" if count == 1 else "s"
+print(f"{count} number{plural} match.")
+print(f"You win ${my_ticket.value(winning_ticket)}!")
+        
+      
+
+    
+
+  
+
+
+
+
         
