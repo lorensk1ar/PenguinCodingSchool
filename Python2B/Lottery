@@ -32,9 +32,12 @@ def is_valid(number, limit):
   result = False
   
   try:
+    decimal = float(number)
     number = int(number)
-
-    if number <= 0:
+    
+    if decimal != number:
+      print("No decimals or fractions, please!")
+    elif number <= 0:
       print("Greater or equal to 1, please!")
     elif number > limit:
       print(f"Less than or equal to {limit}, please!")
