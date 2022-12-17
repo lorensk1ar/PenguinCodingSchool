@@ -1,0 +1,46 @@
+'''
+TO DO
+Board class
+Board methods
+Separate board display and data
+How do I detect win?
+How do I detect tie?
+
+
+'''
+
+from random import randint
+
+board = [
+  ['--', '--', '--'],
+  ['--', '--', '--'],
+  ['--', '--', '--'],
+]
+
+win = False
+tie = False
+
+while not win and not tie:
+  print()
+  for row in board:
+    print(row)
+  
+  r = int(input("Row [0, 1, 2]?) "))
+  c = int(input("Column [0, 1, 2]?"))
+
+  board[r][c] = "X"
+
+  full = True
+
+  while full:
+    r = randint(0, 2)
+    c = randint(0, 2)
+
+    if board[r][c] == '--':
+      full = False
+
+  board[r][c] = 'O'
+
+  # update win
+
+  # update tie
