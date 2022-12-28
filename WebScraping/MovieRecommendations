@@ -1,56 +1,121 @@
 '''
 TO DO
-y determine first & last page for each letter
-load each page
-extract critic name, critic link, number of movies reviewed
-store to .csv
+y load each page
+y extract critic name, critic link, number of movies reviewed
+y write to .csv
+what if page fails to load?
+list of critics complete?
 
 '''
 
 ## MODULES
 from bs4 import BeautifulSoup
+import csv
 import random
 import requests
 import time
 
 
 ## MAIN
-for i in range(26):
-    # loop through each letter
-    number = ord("a") + i
-    letter = chr(number)
+# open csv file
+f = open("critics.csv", "x")
 
-    # build url using each letter
-    url = "https://www.metacritic.com/browse/movies/critic/name/"+letter
-    headers = {'user-agent': 'my-app/0.0.1'}
+# remember failures
+fails = []
 
-    # add individual pages for each letter
+# declare browser
+headers = {'user-agent': 'my-app/0.0.1'}
+
+# declare url stem
+stem = "https://www.metacritic.com/browse/movies/critic/name/"
+
+# request each letter
+first = ord('a')
+letters = [chr(first + number) for number in range(26)]
+for letter in letters:
+
+    # start at page 0
+    page = 0
+
+    # request initial data
+    url = stem + letter
     html = requests.get(url, headers = headers)
-    soup = BeautifulSoup(html.content, "html.parser")
 
-    # find first page
-    first = 0
-
-    # find last page
-    last_page = soup.find("li", class_="page last_page")
-    last_page_text = last_page.text
-    last = int(last_page_text)
-    
-    for page in range(first, last + 1):
-        url = "https://www.metacritic.com/browse/movies/critic/name/"+letter
-        url += "?page=" + str(page)
-
-        # request data
-        html = requests.get(url, headers = headers)
-
-        # generate soup object using data
+    soup = None
+    while not soup:
+        fails.append(url)
         soup = BeautifulSoup(html.content, "html.parser")
 
-        # print header
-        print(url)
-        print(soup.prettify()[:100])
-        print()
+    # find last page
+    navigation = soup.find("div", class_="page_nav")
+    last_page_html = navigation.find("li", class_="last_page")
+    last_page_text = last_page_html.text
+    last_page = int(last_page_text)
+
+    # request each page until last page
+    # note that pages are numbered from 0 to last_page - 1
+    while page < last_page:
+        table = soup.find("table", class_="list")
+
+        # parse information
+        critics = table.find_all("td", class_="title_wrapper")
+        for critic in critics:
+            tmp = critic.find("div", class_="title")
+            link = tmp.a["href"]
+            name = tmp.a.text.strip()
+            
+            tmp = critic.find("div", class_="counts")
+            messy_count = tmp.text
+
+            # find first number
+            for character in messy_count:
+                if character.isnumeric():
+                    break
+            first = messy_count.index(character)
+
+            # find '\n' after first number
+            last = messy_count.index("\n", first)
+            
+            # remove comma
+            count = messy_count[first:last]
+            index = count.find(",")
+            if index > 0:
+                count = count.replace(",", "")
+            
+            tmp = critic.find_all("div", class_="pub")
+            publications = []
+            for pub in tmp:
+                publications.append(pub.a.text.strip())
+            publications = str(publications)
+
+            # write to csv
+            # line = ", ".join([name, link, count, publications, "\n"])
+            line = ", ".join([name, link, count, "\n"])
+            f.write(line)
+            print(line)
 
         # delay before loading next page
-        wait = random.randint(15, 75)
+        wait = random.randint(45, 90)
         time.sleep(wait)
+
+        # update page number
+        page += 1
+
+        # load next page    
+        url = stem + letter + "?page=" + str(page)
+        html = requests.get(url, headers = headers)
+
+        soup = None
+        while not soup:
+            fails.append(url)
+            soup = BeautifulSoup(html.content, "html.parser")
+
+# close csv file
+f.close()
+
+print(fails)
+
+
+
+
+
