@@ -1,27 +1,55 @@
 '''
 TO DO
-Determine first & last page for each letter
+y determine first & last page for each letter
+load each page
+extract critic name, critic link, number of movies reviewed
+store to .csv
 
 '''
+
+## MODULES
 from bs4 import BeautifulSoup
 import random
 import requests
 import time
 
 
+## MAIN
 for i in range(26):
+    # loop through each letter
     number = ord("a") + i
     letter = chr(number)
+
+    # build url using each letter
     url = "https://www.metacritic.com/browse/movies/critic/name/"+letter
     headers = {'user-agent': 'my-app/0.0.1'}
+
+    # add individual pages for each letter
+    html = requests.get(url, headers = headers)
+    soup = BeautifulSoup(html.content, "html.parser")
+
+    # find first page
     first = 0
-    last = 0
+
+    # find last page
+    last_page = soup.find("li", class_="page last_page")
+    last_page_text = last_page.text
+    last = int(last_page_text)
+    
     for page in range(first, last + 1):
         url += "?page=" + str(page)
-        r = requests.get(url, headers = headers)
-        soup = BeautifulSoup(r.content, "html.parser")
+
+        # request data
+        html = requests.get(url, headers = headers)
+
+        # generate soup object using data
+        soup = BeautifulSoup(html.content, "html.parser")
+
+        # print header
         print(url)
         print(soup.prettify()[:100])
         print()
+
+        # delay before loading next page
         wait = random.randint(15, 75)
         time.sleep(wait)
