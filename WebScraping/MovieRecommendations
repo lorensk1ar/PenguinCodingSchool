@@ -1,15 +1,27 @@
+'''
+TO DO
+Determine first & last page for each letter
+
+'''
 from bs4 import BeautifulSoup
+import random
 import requests
+import time
 
-url = "https://www.metacritic.com/browse/movies/critic/name"
-headers = {'user-agent': 'my-app/0.0.1'}
-r = requests.get(url, headers = headers)
-soup = BeautifulSoup(r.content, "html.parser")
 
-'''
-print(soup.prettify()[:1000])
-'''
-
-sections = soup.find_all("tr", class_="details_section")
-print(len(sections))
-print(sections[0])
+for i in range(26):
+    number = ord("a") + i
+    letter = chr(number)
+    url = "https://www.metacritic.com/browse/movies/critic/name/"+letter
+    headers = {'user-agent': 'my-app/0.0.1'}
+    first = 0
+    last = 0
+    for page in range(first, last + 1):
+        url += "?page=" + str(page)
+        r = requests.get(url, headers = headers)
+        soup = BeautifulSoup(r.content, "html.parser")
+        print(url)
+        print(soup.prettify()[:100])
+        print()
+        wait = random.randint(15, 75)
+        time.sleep(wait)
