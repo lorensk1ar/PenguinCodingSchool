@@ -37,6 +37,7 @@ for i in range(26):
     last = int(last_page_text)
     
     for page in range(first, last + 1):
+        url = "https://www.metacritic.com/browse/movies/critic/name/"+letter
         url += "?page=" + str(page)
 
         # request data
