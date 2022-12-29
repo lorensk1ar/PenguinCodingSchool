@@ -3,14 +3,13 @@ TO DO
 y load each page
 y extract critic name, critic link, number of movies reviewed
 y write to .csv
-what if page fails to load?
-list of critics complete?
+y if only one page and no navigation? if zero pages and no critics?
+y list of critics complete?
 
 '''
 
 ## MODULES
 from bs4 import BeautifulSoup
-import csv
 import random
 import requests
 import time
@@ -19,9 +18,6 @@ import time
 ## MAIN
 # open csv file
 f = open("critics.csv", "x")
-
-# remember failures
-fails = []
 
 # declare browser
 headers = {'user-agent': 'my-app/0.0.1'}
@@ -33,37 +29,42 @@ stem = "https://www.metacritic.com/browse/movies/critic/name/"
 first = ord('a')
 letters = [chr(first + number) for number in range(26)]
 for letter in letters:
-
     # start at page 0
     page = 0
 
-    # request initial data
-    url = stem + letter
-    html = requests.get(url, headers = headers)
-
-    soup = None
-    while not soup:
-        fails.append(url)
+    # while page found
+    empty = False
+    while not empty:
+        
+        # request data
+        url = stem + letter + "?page=" + str(page)
+        print(url)
+        
+        html = requests.get(url, headers = headers)
         soup = BeautifulSoup(html.content, "html.parser")
 
-    # find last page
-    navigation = soup.find("div", class_="page_nav")
-    last_page_html = navigation.find("li", class_="last_page")
-    last_page_text = last_page_html.text
-    last_page = int(last_page_text)
+        # data found?
+        divs = soup.find_all("div", class_="pad_top1")
 
-    # request each page until last page
-    # note that pages are numbered from 0 to last_page - 1
-    while page < last_page:
-        table = soup.find("table", class_="list")
+        for div in divs:
+            if div.text.strip() == "No Results Found":
+                empty = True
+
+        if empty:
+            print("No results for " + url)
+            continue
 
         # parse information
+        table = soup.find("table", class_="list")
+
         critics = table.find_all("td", class_="title_wrapper")
         for critic in critics:
+            # find critic name and critic link
             tmp = critic.find("div", class_="title")
             link = tmp.a["href"]
             name = tmp.a.text.strip()
             
+            # find movie count
             tmp = critic.find("div", class_="counts")
             messy_count = tmp.text
 
@@ -82,40 +83,24 @@ for letter in letters:
             if index > 0:
                 count = count.replace(",", "")
             
+            # find publications
             tmp = critic.find_all("div", class_="pub")
-            publications = []
+            publications = ""
             for pub in tmp:
-                publications.append(pub.a.text.strip())
-            publications = str(publications)
+                publications += pub.a.text.strip() + ", "
+            publications = publications[:-2]
 
             # write to csv
-            # line = ", ".join([name, link, count, publications, "\n"])
-            line = ", ".join([name, link, count, "\n"])
+            line = ", ".join([name, link, count, publications, "\n"])
             f.write(line)
-            print(line)
 
-        # delay before loading next page
-        wait = random.randint(45, 90)
-        time.sleep(wait)
 
         # update page number
         page += 1
 
-        # load next page    
-        url = stem + letter + "?page=" + str(page)
-        html = requests.get(url, headers = headers)
-
-        soup = None
-        while not soup:
-            fails.append(url)
-            soup = BeautifulSoup(html.content, "html.parser")
+        # delay before loading next page
+        wait = random.randint(15, 45)
+        time.sleep(wait)
 
 # close csv file
 f.close()
-
-print(fails)
-
-
-
-
-
