@@ -1,0 +1,106 @@
+'''
+TO DO
+y load each page
+y extract critic name, critic link, number of movies reviewed
+y write to .csv
+y if only one page and no navigation? if zero pages and no critics?
+y list of critics complete?
+
+'''
+
+## MODULES
+from bs4 import BeautifulSoup
+import random
+import requests
+import time
+
+
+## MAIN
+# open csv file
+f = open("critics.csv", "x")
+
+# declare browser
+headers = {'user-agent': 'my-app/0.0.1'}
+
+# declare url stem
+stem = "https://www.metacritic.com/browse/movies/critic/name/"
+
+# request each letter
+first = ord('a')
+letters = [chr(first + number) for number in range(26)]
+for letter in letters:
+    # start at page 0
+    page = 0
+
+    # while page found
+    empty = False
+    while not empty:
+        
+        # request data
+        url = stem + letter + "?page=" + str(page)
+        print(url)
+        
+        html = requests.get(url, headers = headers)
+        soup = BeautifulSoup(html.content, "html.parser")
+
+        # data found?
+        divs = soup.find_all("div", class_="pad_top1")
+
+        for div in divs:
+            if div.text.strip() == "No Results Found":
+                empty = True
+
+        if empty:
+            print("No results for " + url)
+            continue
+
+        # parse information
+        table = soup.find("table", class_="list")
+
+        critics = table.find_all("td", class_="title_wrapper")
+        for critic in critics:
+            # find critic name and critic link
+            tmp = critic.find("div", class_="title")
+            link = tmp.a["href"]
+            name = tmp.a.text.strip()
+            
+            # find movie count
+            tmp = critic.find("div", class_="counts")
+            messy_count = tmp.text
+
+            # find first number
+            for character in messy_count:
+                if character.isnumeric():
+                    break
+            first = messy_count.index(character)
+
+            # find '\n' after first number
+            last = messy_count.index("\n", first)
+            
+            # remove comma
+            count = messy_count[first:last]
+            index = count.find(",")
+            if index > 0:
+                count = count.replace(",", "")
+            
+            # find publications
+            tmp = critic.find_all("div", class_="pub")
+            publications = ""
+            for pub in tmp:
+                publications += pub.a.text.strip() + ", "
+            publications = publications[:-2]
+
+            # write to csv
+            line = ", ".join([name, link, count, publications, "\n"])
+            f.write(line)
+
+        # update page number
+        page += 1
+
+        # delay before loading next page
+        wait = random.randint(15, 45)
+        time.sleep(wait)
+
+# close csv file
+f.close()
+
