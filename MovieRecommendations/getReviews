@@ -1,0 +1,133 @@
+'''
+TO DO
+
+https://...?filter=movies&num_items=100&sort_options=date
+
+if no score?
+y date?
+y link to review?
+any other errors?
+
+write to line if missing?
+
+stop if year less than 2013?
+
+save file rather than reload multiple times?
+jsonify?
+
+'''
+
+## MODULES
+from bs4 import BeautifulSoup
+import random
+import requests
+import time
+
+## TRACK?
+track = True
+
+## MAIN
+# open csv file
+f = open("reviews.csv", "x")
+
+# open list of critics
+c = open("test.csv", "r")
+
+# declare list of links
+links = []
+
+# read list of critics
+line = c.readline()
+while line:
+    tmp = line.split(",")
+    link = tmp[1]
+    links.append(link)
+    line = c.readline()
+
+c.close()
+
+# declare browser
+headers = {'user-agent': 'my-app/0.0.1'}
+
+# declare url stem
+stem = "https://www.metacritic.com"
+
+for link in links:
+    
+    # skip header row
+    if link == links[0]:
+        continue
+
+    # start at page 0
+    page = 0
+
+    # while page found
+    empty = False
+    while not empty:
+
+        # construct url
+        url = stem + link + "?page=" + str(page)
+        if track:
+            print(url)
+
+        # request data
+        html = requests.get(url, headers = headers)
+        soup = BeautifulSoup(html.content, "html.parser")
+
+        # data found?
+        msg_no_reviews = soup.find("p", class_="msg_no_reviews")
+
+        if msg_no_reviews != None:
+            empty = True
+            print("No results for " + url)
+            continue
+
+        reviews = soup.find_all("li", class_="critic_review")
+
+        for review in reviews:
+            messy_score = review.find("span", class_= "indiv")
+            score = messy_score.text.strip()
+            
+            messy_title = review.find("div", class_= "review_product")
+            title = messy_title.text.strip()
+            
+            messy_publication = review.find("li", class_= "publication_title")
+            publication = messy_publication.text.strip()
+            
+            messy_date = review.find("li", class_= "post_date")
+            try:
+                date = messy_date.text.strip()
+                date = date[7:]
+                # month
+                # day
+                # year
+                
+            except:
+                if track:
+                    print("No date for review")
+                date = ""
+                
+            messy_review_link = review.find("li", class_= "full_review")
+            try:
+                review_link = messy_review_link.a["href"]
+                
+            except:
+                if track:
+                    print("No link for review")
+                review_link = ""
+
+            # write to csv
+            line = ", ".join([link, title, score, publication, date, review_link, "\n"])
+            f.write(line)
+
+        # update page number
+        page += 1
+
+        # delay before loading next page
+        wait = random.randint(15, 45)
+        time.sleep(wait)
+
+
+# close csv file
+f.close()
+
