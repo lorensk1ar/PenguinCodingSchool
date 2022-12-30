@@ -124,7 +124,7 @@ for link in links:
                 review_link = ""
 
             # write to csv
-            line = ", ".join([link, title, score, publication, date, review_link, "\n"])
+            line = ", ".join([link, title, score, publication, year, month, day, review_link, "\n"])
             f.write(line)
 
         # update page number
@@ -133,7 +133,6 @@ for link in links:
         # delay before loading next page
         wait = random.randint(15, 45)
         time.sleep(wait)
-
-
+        
 # close csv file
 f.close()
