@@ -1,19 +1,15 @@
 '''
 TO DO
 
-https://...?filter=movies&num_items=100&sort_options=date
+keep or skip reviews if no score?
 
-if no score?
-y date?
-y link to review?
+keep or skip reviews with no date?
+
 any other errors?
-
-write to line if missing?
 
 stop if year less than 2013?
 
-save file rather than reload multiple times?
-jsonify?
+save file rather than reload multiple times? jsonify?
 
 '''
 
@@ -66,7 +62,7 @@ for link in links:
     while not empty:
 
         # construct url
-        url = stem + link + "?page=" + str(page)
+        url = stem + link + "?filter=movies&num_items=100&sort_options=date" + "&page=" + str(page)
         if track:
             print(url)
 
@@ -98,9 +94,20 @@ for link in links:
             try:
                 date = messy_date.text.strip()
                 date = date[7:]
+
                 # month
+                space = date.find(" ")
+                month = date[:space]
+                
                 # day
+                comma = date.find(", ")
+                day = date[space + 1:comma]
+                
                 # year
+                year = date[comma + 1:]
+
+                if track:
+                    print(year, month, day)
                 
             except:
                 if track:
@@ -130,4 +137,3 @@ for link in links:
 
 # close csv file
 f.close()
-
