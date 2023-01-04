@@ -1,0 +1,42 @@
+# import modules
+import pygame
+pygame.init()
+
+from sys import exit
+
+# create display
+WIDTH = 800
+HEIGHT = 600
+screen = pygame.display.set_mode((600, 800))
+
+# create display title
+pygame.display.set_caption("Best. Game. Ever.")
+
+# create clock
+clock = pygame.time.Clock()
+
+Th = 50
+Tw = 50
+Tx = 0
+Ty = 200
+Ts = pygame.Surface((Tw, Th))
+Ts.fill("green")
+
+# main loop
+while True:
+
+    # check player inputs
+    for event in pygame.event.get():
+        
+        # exit loop if quit game
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            exit()
+
+    # draw all elements
+    screen.blit(Ts, (WIDTH / 2 - Tw / 2 + Tx, HEIGHT / 2 - Th / 2 + Ty))
+
+    pygame.display.update()
+    clock.tick(60)
+
+
