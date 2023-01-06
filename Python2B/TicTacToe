@@ -1,46 +1,82 @@
 '''
-TO DO
-Board class
-Board methods
-Separate board display and data
-How do I detect win?
-How do I detect tie?
+## TO DO
+y validate player input
+y validate computer input
+y implement update win condition
+y implement update tie condition
 
+write tic tac ai for computer move
+implement tic tac toe api using tic tac toe ai
+
+add computer goes first mode
+add two player mode
+
+improve display
+
+version with board class & methods?
 
 '''
 
-from random import randint
+## CONSTANTS
+symbols = ['---', ' X ', ' O ']
 
 board = [
-  ['--', '--', '--'],
-  ['--', '--', '--'],
-  ['--', '--', '--'],
+  [0,0,0],
+  [0,0,0],
+  [0,0,0]
 ]
 
-win = False
-tie = False
 
-while not win and not tie:
-  print()
-  for row in board:
-    print(row)
+## FUNCTIONS
+from random import randint
+
+def display_cell(r, c):
+  index = board[r][c]
+  print(symbols[index], end='')
   
-  r = int(input("Row [0, 1, 2]?) "))
-  c = int(input("Column [0, 1, 2]?"))
+def display_board():
+  for row in range(3):
+    for col in range(3):
+      display_cell(row, col)
+    print('\n')
 
-  board[r][c] = "X"
+def player_moves():
+  valid = False
+  while not valid:
+    row = int(input("What row? "))
+    col = int(input("What column? "))
+    valid = board[row][col] == 0
 
-  full = True
+    if not valid:
+      print("That move is not available")
+    else:
+      board[row][col] = 1
 
-  while full:
-    r = randint(0, 2)
-    c = randint(0, 2)
+def computer_moves():
+  valid = False
+  while not valid:
+    row = randint(0, 2)
+    col = randint(0, 2)
+    valid = board[row][col] == 0
 
-    if board[r][c] == '--':
-      full = False
+    if valid:
+      board[row][col] = 2
 
-  board[r][c] = 'O'
+def tic_tac_toe():
+  win = False
+  tie = False
+  while not win and not tie:
+    display_board()
 
-  # update win
+    # player moves
+    player_moves()
 
-  # update tie
+    # computer moves
+    computer_moves()
+
+    # test for win
+
+    # test for tie
+
+## MAIN
+tic_tac_toe()
