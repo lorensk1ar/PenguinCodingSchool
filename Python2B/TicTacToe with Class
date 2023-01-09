@@ -1,0 +1,81 @@
+## MODULES
+from random import randint
+
+
+## CONSTANTS
+symbols = [" ", "X", "O"]
+
+
+## CLASSES
+class Square:
+    def __init__ (self, initial = 0):
+        assert type(initial) == type(0)
+        self.value = initial
+
+    def __repr__ (self):
+        return symbols[self.value]
+
+    def __str__ (self):
+        return symbols[self.value]
+
+    def get_symbol(self):
+        return symbols[self.value]
+    
+    def get_value(self):
+        return self.value
+
+    def set_value(self, value):
+        assert type(value) == type(0)
+        self.value = value
+
+class Board:
+    def __init__ (self, size, initial = 0):
+        self.size = size
+        self.squares = [Square(initial) for i in range(size ** 2)]
+
+    def __repr__(self):
+        self.display()
+
+    def __str__(self):
+        self.display()
+
+    def get_index(self, rank, file):
+        return rank * self.size + file
+
+    def get_coord(self, index):
+        rank = index // self.size
+        file = index % self.size
+        return rank, file
+
+    def get_square(self, rank, file):
+        index = self.get_index(rank, file)
+        square = self.squares[index]
+        return square
+
+    def display_board(self):
+        for rank in range(self.size - 1, 0 - 1, -1):
+            border = "  +"
+            row = str(rank + 1) + " |"
+
+            for file in range(self.size):
+                border += " - +"
+                square = self.get_square(rank, file)
+                piece = square.get_symbol()
+                row += " " + piece + " |"
+
+            print(border)
+            print(row)
+
+        print(border)
+
+        row = "   "
+
+        for file in range(self.size):
+            number = ord("A") + file
+            letter = chr(number)
+            row += " " + letter + "  "
+
+        print(row)
+
+    def display(self):
+        self.display_board()
