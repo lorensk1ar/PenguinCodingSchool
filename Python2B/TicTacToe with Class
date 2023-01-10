@@ -1,4 +1,5 @@
 ## MODULES
+from math import inf
 from random import randint
 
 
@@ -79,3 +80,95 @@ class Board:
 
     def display(self):
         self.display_board()
+        
+## FUNCTIONS
+def parse_move(coord, board):
+    file = coord[0]
+
+    if file.isalpha():
+        file = file.upper()
+        file = ord(file) - ord("A")
+
+    else:
+        file = inf
+
+    rank = coord[1]
+
+    if rank.isnumeric():
+        rank = int(rank) - 1
+
+    else:
+        rank = inf
+        
+    return rank, file
+
+def validate_move(rank, file, board):
+    if rank >= board.size:
+        return False
+
+    if file >= board.size:
+        return False
+
+    square = board.get_square(rank, file)
+    if square.get_value() != 0:
+        return False
+
+    return True
+
+def player_moves(board):
+    valid = False
+
+    while not valid:
+        coord = input("Move eg A1, B2, etc? ")
+
+        rank, file = parse_move(coord, board)
+
+        valid = validate_move(rank, file, board)
+
+        if not valid:
+            print("Try again \n")
+
+        else:
+            square = board.get_square(rank, file)
+            square.set_value(1)
+
+    return board
+    
+def computer_moves(board):
+    return board
+    
+def update_status(board):
+    win = False
+    tie = False
+    return win, tie
+
+def tic_tac_toe(size = 3):
+    board = Board(size)
+
+    print("\n")
+    board.display()
+    print("\n")
+
+    win, tie = update_status(board)
+
+    turn = 0
+    while not (win or tie):
+        # who's turn is it?
+        if turn % 2 == 0:
+            board = player_moves(board)
+
+        else:
+            board = computer_moves(board)
+            
+            print("\n")
+            board.display()
+            print("\n")
+
+        turn += 1
+
+        # continue?
+        win, tie = update_status(board)
+        
+        
+## MAIN
+tic_tac_toe()
