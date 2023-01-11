@@ -80,7 +80,8 @@ class Board:
 
     def display(self):
         self.display_board()
-        
+
+
 ## FUNCTIONS
 def parse_move(coord, board):
     file = coord[0]
@@ -133,13 +134,34 @@ def player_moves(board):
             square.set_value(1)
 
     return board
-    
+
 def computer_moves(board):
+    valid = False
+    while not valid:
+        rank = randint(0, board.size - 1)
+        file = randint(0, board.size - 1)
+        valid = validate_move(rank, file, board)
+        
+    square = board.get_square(rank, file)
+    square.set_value(2)
+
     return board
-    
+
 def update_status(board):
     win = False
-    tie = False
+
+    tie = True
+    for i in range(board.size ** 2):
+        rank, file = board.get_coord(i)
+        square = board.get_square(rank, file)
+        value = square.get_value()
+        if value == 0:
+            tie = False
+            break
+        
+    if tie:
+        print("Tie game! \n")
+
     return win, tie
 
 def tic_tac_toe(size = 3):
@@ -159,7 +181,6 @@ def tic_tac_toe(size = 3):
 
         else:
             board = computer_moves(board)
-            
             print("\n")
             board.display()
             print("\n")
@@ -168,7 +189,7 @@ def tic_tac_toe(size = 3):
 
         # continue?
         win, tie = update_status(board)
-        
-        
+
+
 ## MAIN
 tic_tac_toe()
