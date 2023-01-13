@@ -4,17 +4,19 @@ implement update win condition
 implement update tie condition
 
 write tic tac ai for computer move
-list available squares
-score each square
-1 for each row / column / diagonal with 1 X
-5 for each with 2 Xs
-25 for each with 3 Xs
-offense picks the move with the highest score
-defense blocks the opponents highest score
-random first move?
-random choice if more than one move with same score?
+  list available squares
+  score each square
+  1 for each row / column / diagonal with 1 X
+  5 for each with 2 Xs
+  25 for each with 3 Xs
+  offense picks the move with the highest score
+  defense blocks the opponents highest score
+  list valid first moves and select randomly
+  list choices with same score and select randomly?
 
-implement tic tac toe api using tic tac toe ai?
+outer while loop to play again?
+
+keep score?
 
 add zero player mode to test strategies
 add two player mode
@@ -23,6 +25,9 @@ add computer goes first mode
 improve display
 
 version with board class & methods?
+
+implement tic tac toe api?
+
 
 '''
 ## CONSTANTS
@@ -68,45 +73,79 @@ def display_board():
     else:
       print("\n")
     
+
+def is_valid(r, c):
+  '''
+  IN: two integers represent row and column
+  OUT: one boolean
+  EX: 1, 3 --> TRUE
+  4, 3 --> FALSE because no row 4 in tic tac toe
+  '''
+
+  if r < 1 or r > 3:
+    return False
+  if c < 1 or c > 3:
+    return False
+  if board[r][c] != 0:
+    return False
+
+  return True
+
 def player_moves():
-  valid = False
+  valid = is_valid(100, 100)
   while not valid:
     row = int(input("What row? "))
     col = int(input("What column? "))
-    valid = board[row][col] == 0
+    valid = is_valid(row, col)
 
     if not valid:
-      print("That move is not available")
+      print("That move is not available \n")
     else:
       board[row][col] = 1
 
-    print("\n")
-
 def computer_moves():
-  valid = False
+  valid = is_valid(100, 100)
   while not valid:
     row = randint(1, 3)
     col = randint(1, 3)
-    valid = board[row][col] == 0
+    valid = is_valid(row, col)
 
     if valid:
       board[row][col] = 2
 
+def is_tie():
+  for r in range(3):
+    for c in range(3):
+      if board[r][c] == 0:
+        return False
+  return True
+  
 def tic_tac_toe():
+  display_board()
+  
   win = False
   tie = False
-  while not win and not tie:
-    display_board()
 
-    # player moves
-    player_moves()
+  turn = 1
+  while not(win or tie):
+    if turn % 2 == 1:
+      # player moves
+        player_moves()
 
-    # computer moves
-    computer_moves()
+    else:
+      # computer moves
+        computer_moves()
+        display_board()
+      
+    turn += 1
 
     # test for win
 
     # test for tie
+    tie = is_tie()
+
+    if tie:
+      print("Tie game!")
 
 ## MAIN
 tic_tac_toe()
