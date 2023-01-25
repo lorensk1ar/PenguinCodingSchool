@@ -1,0 +1,134 @@
+## MODULES
+from cards import *
+
+## VARIABLES
+face_cards = ["J", "Q", "K", "A"]
+p = Card("0", "0")
+c = Card("0", "0")
+
+## FUNCTIONS
+def how_many_chances(rank):
+  if rank == "J":
+    return 1
+  elif rank == "Q":
+    return 2
+  elif rank == "K":
+    return 3
+  elif rank == "A":
+    return 4
+  else:
+    return 0
+  
+
+## MAIN
+# create players with empty decks
+player = Deck()
+player.empty()
+
+computer = Deck()
+computer.empty()
+
+# deal cards to each player
+dealer = Deck()
+dealer.shuffle()
+
+while dealer.size() > 0:
+  player.pick(dealer.deal())
+  computer.pick(dealer.deal())
+
+turn = 0
+middle = []
+face = False
+while player.size() > 0 and computer.size() > 0:
+  # player's turn
+  if turn % 2 == 0:
+    if not face:
+      p = player.deal()
+      print(p)
+      middle.append(p)
+
+      if p.rank in face_cards:
+        face = True
+        
+    # if facecard
+    else:
+      # determine how many cards
+      chances = how_many_chances(c.rank)
+      print("Player gets", chances, "chances")
+      
+      # deal that many cards
+      for i in range(chances):
+        # deal
+        p = player.deal()
+        print(p)
+        middle.append(p)
+        
+        # if facecard, computer's turn
+        if p.rank in face_cards:
+          break
+        
+      # if no face cards
+      else:
+        # how many cards did computer win?
+        print("Computer wins", len(middle), "cards")
+        print("Computer's deck is", computer.size() + len(middle), "cards")
+        input()
+        
+        # computer keep cards
+        for card in middle:
+          computer.pick(card)
+          
+        # reset middle
+        middle = []
+        
+        # reset face
+        face = False
+    
+  # computer's turn
+  else:
+    if not face:
+      c = computer.deal()
+      print(c)
+      middle.append(c)
+
+      if c.rank in face_cards:
+        face = True
+        
+    else:
+      chances = how_many_chances(p.rank)
+      print("Computer gets", chances, "chances")
+
+      for i in range(chances):
+        c = computer.deal()
+        print(c)
+        middle.append(c)
+
+        # if facecard, computer's turn
+        if c.rank in face_cards:
+          break
+        
+      # if no face cards
+      else:
+        # how many cards did the player win?
+        print("Player wins", len(middle), "cards")
+        print("Player's deck is", player.size() + len(middle), "cards")
+        input()
+        
+        # player keep cards
+        for card in middle:
+          player.pick(card)
+
+        # reset middle
+        middle = []
+          
+        # reset face
+        face = False
+    
+
+  turn += 1
+
+if player.size() > computer.size():
+  print("Player wins!")
+
+else:
+  print("Computer wins!")
