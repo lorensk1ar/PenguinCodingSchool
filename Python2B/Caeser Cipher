@@ -1,0 +1,64 @@
+'''
+TO DO:
+List version?
+Generate single list using lower, upper, and punctuation using string.ascii_letters & string.punctuation
+Encode using (index + key) % len(list)
+
+Dictionary version?
+Use chr and ord to generate a dictionary
+Encode using dictionary.get()
+
+
+'''
+def encode(word, key):
+  result = ''
+  for letter in word:
+    if letter.islower():
+      number = ord(letter)
+      number -= ord('a')
+      number += key
+      number %= 26
+      number += ord('a')
+    elif letter.isupper():
+      number = ord(letter) 
+      number -= ord('A')
+      number += key
+      number %= 26
+      number += ord('A')
+    else:
+      number = ord(letter)
+      
+    result += chr(number)
+  return result
+  
+def decode(word, key):
+  result = ''
+  for letter in word:
+    if letter.islower():
+      number = ord(letter) 
+      number -= ord('a')
+      number -= key
+      number %= 26
+      number += ord('a')
+    elif letter.isupper():
+      number = ord(letter) 
+      number -= ord('A')
+      number -= key
+      number %= 26
+      number += ord('A')
+    else:
+      number = ord(letter)
+      
+    result += chr(number)
+  return result
+
+message = "Hello? My name is Mr. Loren!"
+
+hidden = encode(message, 9129)
+
+print(hidden)
+
+clear = decode(hidden, 9129)
+
+print(clear)
+
