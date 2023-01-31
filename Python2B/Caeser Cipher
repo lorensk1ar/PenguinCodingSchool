@@ -1,34 +1,37 @@
-import string
+def generate_lookup_tables(key):
+  plain2cipher = {'key': key}
+  cipher2plain = {'key': key}
+  
+  for i in range(26):
+    start = ord('a')
+    x = start + i
+    y = start + (i + key) % 26
+    plain2cipher[chr(x)] = chr(y)
+    cipher2plain[chr(y)] = chr(x)
 
-letters = string.ascii_letters + string.punctuation
+    start = ord('A')
+    x = start + i
+    y = start + (i + key) % 26
+    plain2cipher[chr(x)] = chr(y)
+    cipher2plain[chr(y)] = chr(x)
+
+  return plain2cipher, cipher2plain
 
 def encode(word, key):
+  plain2cipher, cipher2plain = generate_lookup_tables(key)
+    
   result = ''
   for letter in word:
-    try:
-      index = letters.index(letter)
-      index += key
-      index %= len(letters)
-      new = letters[index]
-
-    except:
-      new = letter
-      
+    new = plain2cipher.get(letter, letter)
     result += new
   return result
   
 def decode(word, key):
+  plain2cipher, cipher2plain = generate_lookup_tables(key)
+  
   result = ''
   for letter in word:
-    try:
-      index = letters.index(letter)
-      index -= key
-      index %= len(letters)
-      new = letters[index]
-
-    except:
-      new = letter
-      
+    new = cipher2plain.get(letter, letter)  
     result += new
   return result
 
@@ -41,3 +44,4 @@ print(ciphertext)
 plaintext = decode(ciphertext, 1234)
 
 print(plaintext)
+
