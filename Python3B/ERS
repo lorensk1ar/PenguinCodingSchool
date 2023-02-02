@@ -1,10 +1,14 @@
+'''
+## TO DO
+
+'''
 ## MODULES
 from cards import *
+from time import sleep
 
 ## VARIABLES
 face_cards = ["J", "Q", "K", "A"]
-p = Card("0", "0")
-c = Card("0", "0")
+
 
 ## FUNCTIONS
 def how_many_chances(rank):
@@ -21,114 +25,154 @@ def how_many_chances(rank):
   
 
 ## MAIN
-# create players with empty decks
-player = Deck()
-player.empty()
+def deal_cards():
+  # create players with empty decks
+  player = Deck()
+  player.empty()
+  
+  computer = Deck()
+  computer.empty()
+  
+  # deal cards to each player
+  dealer = Deck()
+  dealer.shuffle()
+  
+  while dealer.size() > 0:
+    player.pick(dealer.deal())
+    computer.pick(dealer.deal())
 
-computer = Deck()
-computer.empty()
+  return player, computer
 
-# deal cards to each player
-dealer = Deck()
-dealer.shuffle()
-
-while dealer.size() > 0:
-  player.pick(dealer.deal())
-  computer.pick(dealer.deal())
-
-turn = 0
-middle = []
-face = False
-while player.size() > 0 and computer.size() > 0:
-  # player's turn
-  if turn % 2 == 0:
-    if not face:
-      p = player.deal()
-      print(p)
-      middle.append(p)
-
-      if p.rank in face_cards:
-        face = True
-        
-    # if facecard
-    else:
-      # determine how many cards
-      chances = how_many_chances(c.rank)
-      print("Player gets", chances, "chances")
-      
-      # deal that many cards
-      for i in range(chances):
-        # deal
+def ERS(player, computer):
+  p = Card("0", "0")
+  c = Card("0", "0")
+  turn = 0
+  middle = []
+  face = False
+  while player.size() > 0 and computer.size() > 0:
+    # player's turn
+    if turn % 2 == 0:
+      if not face:
         p = player.deal()
-        print(p)
+        if watch:
+          print(p)
         middle.append(p)
-        
-        # if facecard, computer's turn
+  
         if p.rank in face_cards:
-          break
-        
-      # if no face cards
-      else:
-        # how many cards did computer win?
-        print("Computer wins", len(middle), "cards")
-        print("Computer's deck is", computer.size() + len(middle), "cards")
-        input()
-        
-        # computer keep cards
-        for card in middle:
-          computer.pick(card)
+          face = True
           
-        # reset middle
-        middle = []
+      # if facecard
+      else:
+        # determine how many cards
+        chances = how_many_chances(c.rank)
+        if watch:
+          print("Player gets", chances, "chances")
         
-        # reset face
-        face = False
-    
-  # computer's turn
-  else:
-    if not face:
-      c = computer.deal()
-      print(c)
-      middle.append(c)
-
-      if c.rank in face_cards:
-        face = True
-        
+        # deal that many cards
+        for i in range(chances):
+          # deal
+          p = player.deal()
+          if watch:
+            print(p)
+          middle.append(p)
+          
+          # if facecard, computer's turn
+          if p.rank in face_cards:
+            break
+          
+        # if no face cards
+        else:
+          # how many cards did computer win?
+          if watch:
+            print("Computer wins", len(middle), "cards")
+            print("Computer's deck is", computer.size() + len(middle), "cards")
+          sleep(delay)
+          
+          # computer keep cards
+          for card in middle:
+            computer.pick(card)
+            
+          # reset middle
+          middle = []
+          
+          # reset face
+          face = False
+      
+    # computer's turn
     else:
-      chances = how_many_chances(p.rank)
-      print("Computer gets", chances, "chances")
-
-      for i in range(chances):
+      if not face:
         c = computer.deal()
-        print(c)
+        if watch:
+          print(c)
         middle.append(c)
-
-        # if facecard, computer's turn
+  
         if c.rank in face_cards:
-          break
-        
-      # if no face cards
-      else:
-        # how many cards did the player win?
-        print("Player wins", len(middle), "cards")
-        print("Player's deck is", player.size() + len(middle), "cards")
-        input()
-        
-        # player keep cards
-        for card in middle:
-          player.pick(card)
-
-        # reset middle
-        middle = []
+          face = True
           
-        # reset face
-        face = False
+      else:
+        chances = how_many_chances(p.rank)
+        if watch:
+          print("Computer gets", chances, "chances")
+  
+        for i in range(chances):
+          c = computer.deal()
+          if watch:
+            print(c)
+          middle.append(c)
+  
+          # if facecard, computer's turn
+          if c.rank in face_cards:
+            break
+          
+        # if no face cards
+        else:
+          # how many cards did the player win?
+          if watch:
+            print("Player wins", len(middle), "cards")
+            print("Player's deck is", player.size() + len(middle), "cards")
+          sleep(delay)
+          
+          # player keep cards
+          for card in middle:
+            player.pick(card)
+  
+          # reset middle
+          middle = []
+            
+          # reset face
+          face = False
+
+    turn += 1
     
+  return player, computer
 
-  turn += 1
+def determine_winner(player, computer):
+  global player_wins, computer_wins
+  
+  if player.size() > computer.size():
+    player_wins += 1
+    if watch:
+      print("Player wins! \n")
+  elif computer.size() > player.size():
+    computer_wins += 1
+    if watch:
+      print("Computer wins! \n")  
+  else:
+    if watch:
+      print("I didn't know ties were possible?! \n"
 
-if player.size() > computer.size():
-  print("Player wins!")
+watch = True
+delay = 1
+player_wins = 0
+computer_wins = 0
+for trial in range(100):
+  player, computer = deal_cards()
+  player, computer = ERS(player, computer)
+  determine_winner(player, computer)
 
-else:
-  print("Computer wins!")
+  print("player:", player_wins)
+  print("computer:", computer_wins)
+  print()
+
+  
+
