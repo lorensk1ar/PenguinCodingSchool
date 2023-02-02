@@ -1,0 +1,17 @@
+local prize = script.Parent
+
+prize.Material = 'Neon'
+prize.Color = Color3.new(0,1,0)
+prize.Anchored = true
+
+local function hide()
+	print("I found the prize!")
+	local x = math.random(-100, 100)
+	local y = math.random(10, 30)
+	local z = math.random(-100, 100)
+
+	prize.Position = Vector3.new(x, y, z)
+	
+end
+
+prize.Touched:Connect(hide)
